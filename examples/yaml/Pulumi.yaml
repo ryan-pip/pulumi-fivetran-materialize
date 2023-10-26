@@ -1,0 +1,8 @@
+name: fivetran_yaml
+runtime: yaml
+description: A minimal Pulumi YAML program
+resources:
+  group:
+    type: fivetran:index:Group
+    properties:
+      name: Test

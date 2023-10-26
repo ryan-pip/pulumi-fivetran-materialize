@@ -1,3 +1,5 @@
+// Copyright 2016-2018, Pulumi Corporation.
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -9,21 +11,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+//go:generate go run ./generate.go
+
 package main
 
 import (
 	_ "embed"
 
-	fivetran "github.com/benesch/pulumi-fivetran/provider"
+	fivetran "github.com/MaterializeInc/pulumi-fivetran/provider"
+	"github.com/MaterializeInc/pulumi-fivetran/provider/pkg/version"
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 )
 
-// Injected by linker in release builds.
-var version string
-
-//go:embed schema.json
+//go:embed schema-embed.json
 var pulumiSchema []byte
 
 func main() {
-	tfbridge.Main("fivetran", version, fivetran.Provider(version), pulumiSchema)
+	// Modify the path to point to the new provider
+	tfbridge.Main("fivetran", version.Version, fivetran.Provider(), pulumiSchema)
 }
